@@ -29,13 +29,6 @@ body{
     color:white;
     font-size:24px;
     margin-top:15px;
-}
-
-#photoCounter{
-    color:white;
-    font-size:18px;
-    opacity:.8;
-    margin-top:5px;
     margin-bottom:15px;
 }
 
@@ -57,7 +50,6 @@ button{
     font-size:20px;
     font-family:'Peyda',sans-serif;
     cursor:pointer;
-    transition:.3s;
 }
 
 button:hover{
@@ -69,9 +61,7 @@ button:hover{
 <body>
 
 <img id="photo">
-
 <div id="photoDate"></div>
-<div id="photoCounter"></div>
 
 <div class="buttons">
     <button onclick="showRandomPhoto()">📷<br>عکس تصادفی</button>
@@ -94,8 +84,6 @@ let currentIndex = -1;
 function displayPhoto(photo){
     document.getElementById("photo").src = photo.image;
     document.getElementById("photoDate").innerText = "📅 " + photo.date;
-    document.getElementById("photoCounter").innerText =
-        (currentIndex + 1) + " از " + history.length;
 }
 
 function showRandomPhoto(){
@@ -107,7 +95,6 @@ function showRandomPhoto(){
 
     history.push(randomPhoto);
     currentIndex++;
-
     displayPhoto(randomPhoto);
 }
 
