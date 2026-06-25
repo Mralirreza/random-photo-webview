@@ -185,10 +185,22 @@ function loadComments() {
             const comment = docSnap.data();
 
             html += `
-                <div class="comment">
-                    ${comment.text}
-                </div>
-            `;
+<div class="comment">
+    ${comment.text}
+
+    ${
+        localStorage.getItem("isAdmin") === "true"
+        ?
+        <br><br>
+        <button onclick="deleteComment('${docSnap.id}')">
+            🗑 حذف
+        </button>
+        :
+        ""
+    }
+
+</div>
+`;
 
         });
 
