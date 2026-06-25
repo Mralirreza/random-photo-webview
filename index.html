@@ -132,7 +132,7 @@ const db = getFirestore(app);
 let photos = [];
 let currentIndex = 0;
 let unsubscribe = null;
-
+const commentsCollection = collection(db, "comments");
 async function loadPhotos() {
 
     try {
