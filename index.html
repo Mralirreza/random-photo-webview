@@ -191,10 +191,10 @@ function loadComments() {
     ${
         localStorage.getItem("isAdmin") === "true"
         ?
-        <br><br>
+        `<br><br>
         <button onclick="deleteComment('${docSnap.id}')">
             🗑 حذف
-        </button>
+        </button>`
         :
         ""
     }
