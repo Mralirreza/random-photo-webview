@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                                                    <!DOCTYPE html>
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
@@ -93,15 +93,15 @@ body{
 <img id="photo">
 <div id="photoDate"></div>
 
-<textarea id="commentInput" placeholder="کامنت خود را بنویسید..."></textarea>
+<textarea id="commentInput" placeholder="کامنت خود را بنويسيد..."></textarea>
 <br>
 <button class="save-btn" onclick="saveComment()">ثبت کامنت</button>
 
 <div id="comments"></div>
 
 <div class="buttons">
-    <button class="nav-btn" onclick="showPreviousPhoto()">⬅️<br>عکس قبلی</button>
-    <button class="nav-btn" onclick="showNextPhoto()">➡️<br>عکس بعدی</button>
+    <button class="nav-btn" onclick="showPreviousPhoto()">??<br>عکس قبلي</button>
+    <button class="nav-btn" onclick="showNextPhoto()">??<br>عکس بعدي</button>
 </div>
 
 <script type="module">
@@ -127,7 +127,7 @@ function loadComments(){
     const comments =
         JSON.parse(localStorage.getItem(key)) || [];
 
-    let html = "<h3>💬 کامنت‌ها</h3>";
+    let html = "<h3>?? کامنت‌ها</h3>";
 
     comments.forEach(comment => {
         html += `<div class="comment">${comment}</div>`;
@@ -136,7 +136,7 @@ function loadComments(){
     document.getElementById("comments").innerHTML = html;
 }
 
-function saveComment(){
+window.saveComment = function(){
 
     const input =
         document.getElementById("commentInput");
@@ -168,12 +168,12 @@ function displayPhoto(){
         photos[currentIndex].image;
 
     document.getElementById("photoDate").innerText =
-        "📅 " + photos[currentIndex].date;
+        "?? " + photos[currentIndex].date;
 
     loadComments();
 }
 
-function showNextPhoto(){
+window.showNextPhoto = function(){
 
     if(currentIndex < photos.length - 1){
 
@@ -183,7 +183,7 @@ function showNextPhoto(){
     }
 }
 
-function showPreviousPhoto(){
+window.showPreviousPhoto = function(){
 
     if(currentIndex > 0){
 
@@ -195,7 +195,7 @@ function showPreviousPhoto(){
 
 displayPhoto();
 
-</script type="module">
+</script>
 
 </body>
 </html>
