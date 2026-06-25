@@ -296,6 +296,25 @@ window.adminLogin = function () {
     }
 
 }
+  window.deleteComment = async function (id) {
+
+    if (!confirm("آیا از حذف این کامنت مطمئن هستید؟")) {
+        return;
+    }
+
+    try {
+
+        await deleteDoc(doc(db, "comments", id));
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("حذف کامنت انجام نشد.");
+
+    }
+
+}
 </script>
 
 </body>
