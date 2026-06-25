@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Random Photos</title>
+<title>Photo Gallery</title>
 
 <style>
 @font-face{
@@ -28,21 +28,19 @@ body{
 #photoDate{
     color:white;
     font-size:24px;
-    margin-top:15px;
-    margin-bottom:15px;
+    margin:15px 0;
 }
 
 .buttons{
     display:flex;
     justify-content:center;
-    align-items:center;
     gap:15px;
     margin:20px auto;
 }
 
-button{
+.nav-btn{
     width:180px;
-    min-height:120px;
+    min-height:80px;
     background:#E8C6F0;
     color:#000;
     border:none;
@@ -52,8 +50,40 @@ button{
     cursor:pointer;
 }
 
-button:hover{
-    transform:translateY(-5px);
+#commentInput{
+    width:90%;
+    max-width:500px;
+    height:90px;
+    padding:10px;
+    border-radius:15px;
+    font-family:'Peyda',sans-serif;
+    resize:none;
+}
+
+.save-btn{
+    margin-top:10px;
+    padding:12px 24px;
+    border:none;
+    border-radius:15px;
+    background:#E8C6F0;
+    font-family:'Peyda',sans-serif;
+    cursor:pointer;
+}
+
+#comments{
+    width:90%;
+    max-width:500px;
+    margin:20px auto;
+    text-align:right;
+    color:white;
+}
+
+.comment{
+    background:#222;
+    padding:12px;
+    border-radius:12px;
+    margin-top:10px;
+    word-break:break-word;
 }
 </style>
 </head>
@@ -63,13 +93,19 @@ button:hover{
 <img id="photo">
 <div id="photoDate"></div>
 
+<textarea id="commentInput" placeholder="کامنت خود را بنویسید..."></textarea>
+<br>
+<button class="save-btn" onclick="saveComment()">ثبت کامنت</button>
+
+<div id="comments"></div>
+
 <div class="buttons">
-    <button onclick="showRandomPhoto()">📷<br>عکس تصادفی</button>
-    <button onclick="showPreviousPhoto()">⬅️<br>عکس قبلی</button>
-    <button onclick="showNextPhoto()">➡️<br>عکس بعدی</button>
+    <button class="nav-btn" onclick="showPreviousPhoto()">⬅️<br>عکس قبلی</button>
+    <button class="nav-btn" onclick="showNextPhoto()">➡️<br>عکس بعدی</button>
 </div>
 
 <script>
+
 const photos = [
     { image:"images/photo1.jpg", date:"1403/01/15" },
     { image:"images/photo2.jpg", date:"1403/02/10" },
@@ -78,41 +114,87 @@ const photos = [
     { image:"images/photo5.jpg", date:"1403/05/18" }
 ];
 
-let history = [];
-let currentIndex = -1;
+let currentIndex = 0;
 
-function displayPhoto(photo){
-    document.getElementById("photo").src = photo.image;
-    document.getElementById("photoDate").innerText = "📅 " + photo.date;
+function getPhotoKey(){
+    return photos[currentIndex].image;
 }
 
-function showRandomPhoto(){
-    const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+function loadComments(){
 
-    if(currentIndex < history.length - 1){
-        history = history.slice(0, currentIndex + 1);
-    }
+    const key = getPhotoKey();
 
-    history.push(randomPhoto);
-    currentIndex++;
-    displayPhoto(randomPhoto);
+    const comments =
+        JSON.parse(localStorage.getItem(key)) || [];
+
+    let html = "<h3>💬 کامنت‌ها</h3>";
+
+    comments.forEach(comment => {
+        html += `<div class="comment">${comment}</div>`;
+    });
+
+    document.getElementById("comments").innerHTML = html;
 }
 
-function showPreviousPhoto(){
-    if(currentIndex > 0){
-        currentIndex--;
-        displayPhoto(history[currentIndex]);
-    }
+function saveComment(){
+
+    const input =
+        document.getElementById("commentInput");
+
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    const key = getPhotoKey();
+
+    const comments =
+        JSON.parse(localStorage.getItem(key)) || [];
+
+    comments.push(text);
+
+    localStorage.setItem(
+        key,
+        JSON.stringify(comments)
+    );
+
+    input.value = "";
+
+    loadComments();
+}
+
+function displayPhoto(){
+
+    document.getElementById("photo").src =
+        photos[currentIndex].image;
+
+    document.getElementById("photoDate").innerText =
+        "📅 " + photos[currentIndex].date;
+
+    loadComments();
 }
 
 function showNextPhoto(){
-    if(currentIndex < history.length - 1){
+
+    if(currentIndex < photos.length - 1){
+
         currentIndex++;
-        displayPhoto(history[currentIndex]);
+
+        displayPhoto();
     }
 }
 
-showRandomPhoto();
+function showPreviousPhoto(){
+
+    if(currentIndex > 0){
+
+        currentIndex--;
+
+        displayPhoto();
+    }
+}
+
+displayPhoto();
+
 </script>
 
 </body>
