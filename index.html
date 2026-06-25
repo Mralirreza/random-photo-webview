@@ -96,7 +96,9 @@ body{
 <textarea id="commentInput" placeholder="کامنت خود را بنويسيد..."></textarea>
 <br>
 <button class="save-btn" onclick="saveComment()">ثبت کامنت</button>
-
+<button class="save-btn" onclick="adminLogin()">
+ورود مدیر
+</button>
 <div id="comments"></div>
 
 <div class="buttons">
@@ -275,7 +277,25 @@ window.showPreviousPhoto = function(){
 }
 
 loadPhotos();
+window.adminLogin = function () {
 
+    const password = prompt("رمز مدیریت را وارد کنید");
+
+    if (password === ADMIN_PASSWORD) {
+
+        localStorage.setItem("isAdmin", "true");
+
+        alert("ورود مدیر موفق بود.");
+
+        loadComments();
+
+    } else {
+
+        alert("رمز اشتباه است.");
+
+    }
+
+}
 </script>
 
 </body>
