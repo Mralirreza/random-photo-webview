@@ -96,6 +96,14 @@ body{
 <textarea id="commentInput" placeholder="کامنت خود را بنویسید..."></textarea>
 <br>
 <button class="save-btn" onclick="saveComment()">ثبت کامنت</button>
+    <button
+    id="adminBtn"
+    class="save-btn"
+    onclick="adminLogin()">
+
+    ورود مدیر
+
+</button>
 
 <div id="comments"></div>
 
@@ -104,97 +112,80 @@ body{
     <button class="nav-btn" onclick="showNextPhoto()">➡️<br>عکس بعدی</button>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-const photos = [
-    { image:"images/photo1.jpg", date:"1403/01/15" },
-    { image:"images/photo2.jpg", date:"1403/02/10" },
-    { image:"images/photo3.jpg", date:"1403/03/20" },
-    { image:"images/photo4.jpg", date:"1403/04/05" },
-    { image:"images/photo5.jpg", date:"1403/05/18" }
-];
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  doc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    
+const firebaseConfig = {
+  apiKey: "AIzaSyCvcRGbuSMPcE4vXpewgdmP37LfvChIfXQ",
+  authDomain: "random-photo-alireza.firebaseapp.com",
+  projectId: "random-photo-alireza",
+  storageBucket: "random-photo-alireza.firebasestorage.app",
+  messagingSenderId: "233987316766",
+  appId: "1:233987316766:web:95b51081a120d49ffee20f",
+  measurementId: "G-9MHWL76RFE"
+};
 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+    const ADMIN_PASSWORD = "123456";
+let isAdmin = false;
+
+window.adminLogin = function(){
+
+    const password =
+        prompt("رمز مدیر را وارد کنید");
+
+    if(password === ADMIN_PASSWORD){
+
+        isAdmin = true;
+
+        alert("ورود موفق");
+
+        loadComments();
+
+    }else{
+
+        alert("رمز اشتباه است");
+    }
+}
+    let photos = [];
 let currentIndex = 0;
+let unsubscribe = null;
 
-function getPhotoKey(){
-    return photos[currentIndex].image;
-}
+async function loadPhotos() {
 
-function loadComments(){
+    try {
 
-    const key = getPhotoKey();
+        const response = await fetch("photos.json");
 
-    const comments =
-        JSON.parse(localStorage.getItem(key)) || [];
-
-    let html = "<h3>💬 کامنت‌ها</h3>";
-
-    comments.forEach(comment => {
-        html += `<div class="comment">${comment}</div>`;
-    });
-
-    document.getElementById("comments").innerHTML = html;
-}
-
-function saveComment(){
-
-    const input =
-        document.getElementById("commentInput");
-
-    const text = input.value.trim();
-
-    if(!text) return;
-
-    const key = getPhotoKey();
-
-    const comments =
-        JSON.parse(localStorage.getItem(key)) || [];
-
-    comments.push(text);
-
-    localStorage.setItem(
-        key,
-        JSON.stringify(comments)
-    );
-
-    input.value = "";
-
-    loadComments();
-}
-
-function displayPhoto(){
-
-    document.getElementById("photo").src =
-        photos[currentIndex].image;
-
-    document.getElementById("photoDate").innerText =
-        "📅 " + photos[currentIndex].date;
-
-    loadComments();
-}
-
-function showNextPhoto(){
-
-    if(currentIndex < photos.length - 1){
-
-        currentIndex++;
+        photos = await response.json();
 
         displayPhoto();
+
+    } catch (error) {
+
+        console.error("خطا در خواندن photos.json:", error);
+
+        alert("فایل photos.json پیدا نشد یا خطا دارد.");
+
     }
+
 }
-
-function showPreviousPhoto(){
-
-    if(currentIndex > 0){
-
-        currentIndex--;
-
-        displayPhoto();
-    }
-}
-
-displayPhoto();
-
+    displayPhoto();
 </script>
 
 </body>
