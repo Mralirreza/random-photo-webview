@@ -13,22 +13,65 @@ body{
     margin:0;
     background:black;
     text-align:center;
+    font-family:tahoma;
 }
 
 #photo{
     width:100%;
-    max-height:85vh;
+    max-height:75vh;
     object-fit:contain;
     margin-top:10px;
 }
 
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px;
+
+    width:90%;
+    max-width:500px;
+
+    margin:20px auto;
+}
+
 button{
-    padding:12px 25px;
-    margin:8px;
-    font-size:18px;
+    background:#E8C6F0;
+    color:#000;
+
     border:none;
-    border-radius:10px;
+    border-radius:28px;
+
+    min-height:120px;
+
+    font-size:22px;
+    font-weight:bold;
+
     cursor:pointer;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.25);
+
+    transition:0.3s;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:15px;
+}
+
+button:hover{
+    transform:translateY(-5px) scale(1.03);
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+.icon{
+    font-size:40px;
+    margin-bottom:10px;
 }
 
 </style>
@@ -39,15 +82,19 @@ button{
 
 <img id="photo">
 
-<br>
+<div class="buttons">
 
-<button onclick="showRandomPhoto()">
-🎲 عکس تصادفی جدید
-</button>
+    <button onclick="showRandomPhoto()">
+        <div class="icon">📷</div>
+        عکس تصادفی جدید
+    </button>
 
-<button onclick="showPreviousPhoto()">
-⬅️ عکس قبلی
-</button>
+    <button onclick="showPreviousPhoto()">
+        <div class="icon">↩️</div>
+        عکس قبلی
+    </button>
+
+</div>
 
 <script>
 
