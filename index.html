@@ -162,12 +162,15 @@ console.log("Firebase loadComments اجرا شد");
     if (unsubscribe) {
         unsubscribe();
     }
+console.log("Photo Key:", getPhotoKey());
 
+const photoKey = getPhotoKey();
+
+console.log("Searching comments for:", photoKey);
     const q = query(
-        commentsCollection,
-        where("photo", "==", getPhotoKey())
-    );
-
+    commentsCollection,
+    where("photo", "==", photoKey)
+);
     unsubscribe = onSnapshot(q, (snapshot) => {
 
         let html = "<h3>💬 کامنت‌ها</h3>";
