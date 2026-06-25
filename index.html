@@ -157,20 +157,37 @@ function getPhotoKey(){
     return photos[currentIndex].image;
 }
 
-function loadComments(){
+function loadComments() {
 
-    const key = getPhotoKey();
+    if (unsubscribe) {
+        unsubscribe();
+    }
 
-    const comments =
-        JSON.parse(localStorage.getItem(key)) || [];
+    const q = query(
+        commentsCollection,
+        where("photo", "==", getPhotoKey())
+    );
 
-    let html = "<h3>💬 کامنت‌ها</h3>";
+    unsubscribe = onSnapshot(q, (snapshot) => {
 
-    comments.forEach(comment => {
-        html += `<div class="comment">${comment}</div>`;
+        let html = "<h3>💬 کامنت‌ها</h3>";
+
+        snapshot.forEach((docSnap) => {
+
+            const comment = docSnap.data();
+
+            html += 
+                <div class="comment">
+                    ${comment.text}
+                </div>
+            ;
+
+        });
+
+        document.getElementById("comments").innerHTML = html;
+
     });
 
-    document.getElementById("comments").innerHTML = html;
 }
 
 window.saveComment = async function () {
