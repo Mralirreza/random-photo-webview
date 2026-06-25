@@ -100,8 +100,8 @@ body{
 <div id="comments"></div>
 
 <div class="buttons">
-    <button class="nav-btn" onclick="showPreviousPhoto()">??<br>عکس قبلي</button>
-    <button class="nav-btn" onclick="showNextPhoto()">??<br>عکس بعدي</button>
+    <button class="nav-btn" onclick="showPreviousPhoto()">⬅️<br>عکس قبلي</button>
+    <button class="nav-btn" onclick="showNextPhoto()">➡️<br>عکس بعدي</button>
 </div>
 
 <script type="module">
@@ -164,7 +164,7 @@ function loadComments(){
     const comments =
         JSON.parse(localStorage.getItem(key)) || [];
 
-    let html = "<h3>?? کامنت‌ها</h3>";
+    let html = "<h3>💬 کامنت‌ها</h3>";
 
     comments.forEach(comment => {
         html += `<div class="comment">${comment}</div>`;
