@@ -173,30 +173,36 @@ function loadComments(){
     document.getElementById("comments").innerHTML = html;
 }
 
-window.saveComment = function(){
+window.saveComment = async function () {
 
-    const input =
-        document.getElementById("commentInput");
+    const input = document.getElementById("commentInput");
 
     const text = input.value.trim();
 
-    if(!text) return;
+    if (!text) return;
 
-    const key = getPhotoKey();
+    try {
 
-    const comments =
-        JSON.parse(localStorage.getItem(key)) || [];
+        await addDoc(commentsCollection, {
 
-    comments.push(text);
+            photo: getPhotoKey(),
 
-    localStorage.setItem(
-        key,
-        JSON.stringify(comments)
-    );
+            text: text,
 
-    input.value = "";
+            createdAt: serverTimestamp()
 
-    loadComments();
+        });
+
+        input.value = "";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("ثبت کامنت انجام نشد.");
+
+    }
+
 }
 
 function displayPhoto(){
