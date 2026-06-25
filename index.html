@@ -32,33 +32,24 @@ body{
 
 .buttons{
     display:grid;
-    grid-template-columns:repeat(2, 1fr);
-    gap:20px;
-
-    width:90%;
-    max-width:500px;
-
+    grid-template-columns:repeat(3, 1fr);
+    gap:15px;
+    width:95%;
+    max-width:750px;
     margin:20px auto;
 }
 
 button{
     background:#E8C6F0;
     color:#000;
-
     border:none;
     border-radius:28px;
-
     min-height:120px;
-
-    font-size:22px;
+    font-size:20px;
     font-weight:bold;
     font-family:'Peyda', sans-serif;
-
     cursor:pointer;
-
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.25);
-
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
     transition:0.3s;
 
     display:flex;
@@ -82,6 +73,17 @@ button:active{
     margin-bottom:10px;
 }
 
+@media(max-width:600px){
+
+    .buttons{
+        grid-template-columns:1fr;
+    }
+
+    button{
+        min-height:100px;
+    }
+}
+
 </style>
 
 </head>
@@ -98,8 +100,13 @@ button:active{
     </button>
 
     <button onclick="showPreviousPhoto()">
-        <div class="icon">↩️</div>
+        <div class="icon">⬅️</div>
         عکس قبلی
+    </button>
+
+    <button onclick="showNextPhoto()">
+        <div class="icon">➡️</div>
+        عکس بعدی
     </button>
 
 </div>
@@ -114,28 +121,43 @@ const photos = [
     "images/photo5.jpg"
 ];
 
-let currentPhoto = null;
-let previousPhoto = null;
+let history = [];
+let currentIndex = -1;
 
-function showRandomPhoto(){
+function showRandomPhoto() {
 
-    previousPhoto = currentPhoto;
+    const randomPhoto =
+        photos[Math.floor(Math.random() * photos.length)];
 
-    const randomIndex =
-        Math.floor(Math.random() * photos.length);
+    if (currentIndex < history.length - 1) {
+        history = history.slice(0, currentIndex + 1);
+    }
 
-    currentPhoto = photos[randomIndex];
+    history.push(randomPhoto);
+    currentIndex++;
 
-    document.getElementById("photo").src =
-        currentPhoto;
+    document.getElementById("photo").src = randomPhoto;
 }
 
-function showPreviousPhoto(){
+function showPreviousPhoto() {
 
-    if(previousPhoto){
+    if (currentIndex > 0) {
+
+        currentIndex--;
 
         document.getElementById("photo").src =
-            previousPhoto;
+            history[currentIndex];
+    }
+}
+
+function showNextPhoto() {
+
+    if (currentIndex < history.length - 1) {
+
+        currentIndex++;
+
+        document.getElementById("photo").src =
+            history[currentIndex];
     }
 }
 
