@@ -106,6 +106,29 @@ body{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  serverTimestamp,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  const firebaseConfig = {
+  apiKey: "AIzaSyCvcRGbuSMPcE4vXpewgdmP37LfvChIfXQ",
+  authDomain: "random-photo-alireza.firebaseapp.com",
+  projectId: "random-photo-alireza",
+  storageBucket: "random-photo-alireza.firebasestorage.app",
+  messagingSenderId: "233987316766",
+  appId: "1:233987316766:web:95b51081a120d49ffee20f",
+  measurementId: "G-9MHWL76RFE"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 const photos = [
     { image:"images/photo1.jpg", date:"1403/01/15" },
     { image:"images/photo2.jpg", date:"1403/02/10" },
