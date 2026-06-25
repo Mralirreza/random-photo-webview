@@ -158,40 +158,29 @@ function getPhotoKey(){
 }
 
 function loadComments() {
-console.log("Firebase loadComments اجرا شد");
+
     if (unsubscribe) {
         unsubscribe();
     }
-console.log("Photo Key:", getPhotoKey());
 
-const photoKey = getPhotoKey();
+    const photoKey = getPhotoKey();
 
-console.log("Searching comments for:", photoKey);
+    console.log("Photo Key:", photoKey);
+
     const q = query(
-    commentsCollection,
-    where("photo", "==", photoKey)
-);
+        commentsCollection,
+        where("photo", "==", photoKey)
+    );
+
     unsubscribe = onSnapshot(q, (snapshot) => {
-console.log("تعداد کامنت‌ها:", snapshot.size);
 
-snapshot.forEach((docSnap) => {
-    console.log(docSnap.id, docSnap.data());
-  snapshot.forEach((docSnap) => {
+        console.log("تعداد کامنت‌ها:", snapshot.size);
 
-    console.log(docSnap.id, docSnap.data());
-
-    const comment = docSnap.data();
-
-    html += `
-        <div class="comment">
-            ${comment.text}
-        </div>
-    `;
-});
-  
         let html = "<h3>💬 کامنت‌ها</h3>";
 
         snapshot.forEach((docSnap) => {
+
+            console.log(docSnap.id, docSnap.data());
 
             const comment = docSnap.data();
 
