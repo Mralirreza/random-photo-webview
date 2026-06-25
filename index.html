@@ -133,6 +133,7 @@ let photos = [];
 let currentIndex = 0;
 let unsubscribe = null;
 const commentsCollection = collection(db, "comments");
+  const ADMIN_PASSWORD = "123456";
 async function loadPhotos() {
 
     try {
