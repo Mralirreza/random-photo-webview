@@ -129,15 +129,29 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const photos = [
-    { image:"images/photo1.jpg", date:"1403/01/15" },
-    { image:"images/photo2.jpg", date:"1403/02/10" },
-    { image:"images/photo3.jpg", date:"1403/03/20" },
-    { image:"images/photo4.jpg", date:"1403/04/05" },
-    { image:"images/photo5.jpg", date:"1403/05/18" }
-];
-
+let photos = [];
 let currentIndex = 0;
+let unsubscribe = null;
+
+async function loadPhotos() {
+
+    try {
+
+        const response = await fetch("photos.json");
+
+        photos = await response.json();
+
+        displayPhoto();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("خطا در خواندن photos.json");
+
+    }
+
+}
 
 function getPhotoKey(){
     return photos[currentIndex].image;
@@ -212,7 +226,7 @@ window.showPreviousPhoto = function(){
 
         currentIndex--;
 
-        displayPhoto();
+        loadPhotos();
     }
 }
 
