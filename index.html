@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="fa">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Random Photos</title>
 
 <style>
-
-@font-face {
-    font-family: 'Peyda';
-    src: url('Peyda-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
+@font-face{
+    font-family:'Peyda';
+    src:url('Peyda-Bold.ttf') format('truetype');
 }
 
 body{
     margin:0;
     background:black;
     text-align:center;
-    font-family:'Peyda', sans-serif;
+    font-family:'Peyda',sans-serif;
 }
 
 #photo{
@@ -30,139 +25,107 @@ body{
     margin-top:10px;
 }
 
+#photoDate{
+    color:white;
+    font-size:24px;
+    margin-top:15px;
+}
+
+#photoCounter{
+    color:white;
+    font-size:18px;
+    opacity:.8;
+    margin-top:5px;
+    margin-bottom:15px;
+}
+
 .buttons{
-    display:grid;
-    grid-template-columns:repeat(3, 1fr);
+    display:flex;
+    justify-content:center;
+    align-items:center;
     gap:15px;
-    width:95%;
-    max-width:750px;
     margin:20px auto;
 }
 
 button{
+    width:180px;
+    min-height:120px;
     background:#E8C6F0;
     color:#000;
     border:none;
     border-radius:28px;
-    min-height:120px;
     font-size:20px;
-    font-weight:bold;
-    font-family:'Peyda', sans-serif;
+    font-family:'Peyda',sans-serif;
     cursor:pointer;
-    box-shadow:0 8px 20px rgba(0,0,0,0.25);
-    transition:0.3s;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-
-    padding:15px;
+    transition:.3s;
 }
 
 button:hover{
-    transform:translateY(-5px) scale(1.03);
+    transform:translateY(-5px);
 }
-
-button:active{
-    transform:scale(0.98);
-}
-
-.icon{
-    font-size:40px;
-    margin-bottom:10px;
-}
-
-@media(max-width:600px){
-
-    .buttons{
-        grid-template-columns:1fr;
-    }
-
-    button{
-        min-height:100px;
-    }
-}
-
 </style>
-
 </head>
 
 <body>
 
 <img id="photo">
 
+<div id="photoDate"></div>
+<div id="photoCounter"></div>
+
 <div class="buttons">
-
-    <button onclick="showRandomPhoto()">
-        <div class="icon">📷</div>
-        عکس تصادفی جدید
-    </button>
-
-    <button onclick="showPreviousPhoto()">
-        <div class="icon">⬅️</div>
-        عکس قبلی
-    </button>
-
-    <button onclick="showNextPhoto()">
-        <div class="icon">➡️</div>
-        عکس بعدی
-    </button>
-
+    <button onclick="showRandomPhoto()">📷<br>عکس تصادفی</button>
+    <button onclick="showPreviousPhoto()">⬅️<br>عکس قبلی</button>
+    <button onclick="showNextPhoto()">➡️<br>عکس بعدی</button>
 </div>
 
 <script>
-
 const photos = [
-    "images/photo1.jpg",
-    "images/photo2.jpg",
-    "images/photo3.jpg",
-    "images/photo4.jpg",
-    "images/photo5.jpg"
+    { image:"images/photo1.jpg", date:"1403/01/15" },
+    { image:"images/photo2.jpg", date:"1403/02/10" },
+    { image:"images/photo3.jpg", date:"1403/03/20" },
+    { image:"images/photo4.jpg", date:"1403/04/05" },
+    { image:"images/photo5.jpg", date:"1403/05/18" }
 ];
 
 let history = [];
 let currentIndex = -1;
 
-function showRandomPhoto() {
+function displayPhoto(photo){
+    document.getElementById("photo").src = photo.image;
+    document.getElementById("photoDate").innerText = "📅 " + photo.date;
+    document.getElementById("photoCounter").innerText =
+        (currentIndex + 1) + " از " + history.length;
+}
 
-    const randomPhoto =
-        photos[Math.floor(Math.random() * photos.length)];
+function showRandomPhoto(){
+    const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
 
-    if (currentIndex < history.length - 1) {
+    if(currentIndex < history.length - 1){
         history = history.slice(0, currentIndex + 1);
     }
 
     history.push(randomPhoto);
     currentIndex++;
 
-    document.getElementById("photo").src = randomPhoto;
+    displayPhoto(randomPhoto);
 }
 
-function showPreviousPhoto() {
-
-    if (currentIndex > 0) {
-
+function showPreviousPhoto(){
+    if(currentIndex > 0){
         currentIndex--;
-
-        document.getElementById("photo").src =
-            history[currentIndex];
+        displayPhoto(history[currentIndex]);
     }
 }
 
-function showNextPhoto() {
-
-    if (currentIndex < history.length - 1) {
-
+function showNextPhoto(){
+    if(currentIndex < history.length - 1){
         currentIndex++;
-
-        document.getElementById("photo").src =
-            history[currentIndex];
+        displayPhoto(history[currentIndex]);
     }
 }
 
 showRandomPhoto();
-
 </script>
 
 </body>
