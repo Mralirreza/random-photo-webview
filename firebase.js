@@ -1,56 +1,92 @@
-// ===============================
-// Firebase Configuration
+// ======================================
+// Firebase
 // Random Photo Viewer v2.0
-// ===============================
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+// ======================================
 
 import {
-    getAuth,
-    signInAnonymously
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+initializeApp
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 
 import {
-    getFirestore,
-    collection
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+getAuth,
+
+signInAnonymously
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-// ===============================
+import {
+
+getFirestore,
+
+collection,
+
+addDoc,
+
+query,
+
+where,
+
+orderBy,
+
+onSnapshot,
+
+serverTimestamp,
+
+deleteDoc,
+
+doc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ======================================
 // Firebase Config
-// ===============================
+// ======================================
 
-const firebaseConfig = {
+const firebaseConfig={
 
-    apiKey: "YOUR_API_KEY",
+apiKey:"YOUR_API_KEY",
 
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
+authDomain:"YOUR_PROJECT.firebaseapp.com",
 
-    projectId: "YOUR_PROJECT",
+projectId:"YOUR_PROJECT",
 
-    storageBucket: "YOUR_PROJECT.appspot.com",
+storageBucket:"YOUR_PROJECT.appspot.com",
 
-    messagingSenderId: "YOUR_SENDER_ID",
+messagingSenderId:"YOUR_SENDER",
 
-    appId: "YOUR_APP_ID"
+appId:"YOUR_APP_ID"
 
 };
 
 
-// ===============================
-// Initialize
-// ===============================
+// ======================================
 
-const app = initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth=getAuth(app);
 
-const db = getFirestore(app);
+const db=getFirestore(app);
 
 
-// ===============================
-// Anonymous Login
-// ===============================
+// ======================================
 
 async function loginAnonymous(){
 
@@ -75,25 +111,45 @@ async function loginAnonymous(){
 }
 
 
-// ===============================
-// Collections
-// ===============================
+// ======================================
 
-const commentsCollection = collection(db,"comments");
+const commentsCollection=
+
+collection(
+
+db,
+
+"comments"
+
+);
 
 
-// ===============================
-// Export
-// ===============================
+// ======================================
 
 export{
 
-    db,
+db,
 
-    auth,
+auth,
 
-    commentsCollection,
+commentsCollection,
 
-    loginAnonymous
+loginAnonymous,
+
+addDoc,
+
+query,
+
+where,
+
+orderBy,
+
+onSnapshot,
+
+serverTimestamp,
+
+deleteDoc,
+
+doc
 
 };
