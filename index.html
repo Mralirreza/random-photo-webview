@@ -300,14 +300,16 @@ window.showPreviousPhoto = function(){
 
         currentIndex--;
 
-       const userName = getUserName();
+        loadPhotos();
+
+    }
+
+}
+const userName = getUserName();
 
 console.log("نام کاربر:", userName);
 
 loadPhotos();
-    }
-}
-
 loadPhotos();
 window.adminLogin = function () {
 
