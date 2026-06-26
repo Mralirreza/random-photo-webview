@@ -252,13 +252,15 @@ window.saveComment = async function () {
 
         await addDoc(commentsCollection, {
 
-            photo: getPhotoKey(),
+    photo: getPhotoKey(),
 
-            text: text,
+    name: getUserName(),
 
-            createdAt: serverTimestamp()
+    text: text,
 
-        });
+    createdAt: serverTimestamp()
+
+});
 
         input.value = "";
 
