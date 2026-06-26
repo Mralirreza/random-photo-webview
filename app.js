@@ -649,3 +649,241 @@ async function init() {
 // ===========================================
 
 init();
+// ===========================================
+// Utilities
+// ===========================================
+
+function showStatus(message, type = "info") {
+
+    let status = document.getElementById("statusMessage");
+
+    if (!status) {
+
+        status = document.createElement("div");
+
+        status.id = "statusMessage";
+
+        status.style.position = "fixed";
+        status.style.bottom = "20px";
+        status.style.left = "50%";
+        status.style.transform = "translateX(-50%)";
+        status.style.padding = "12px 20px";
+        status.style.borderRadius = "10px";
+        status.style.color = "#fff";
+        status.style.zIndex = "9999";
+        status.style.fontFamily = "inherit";
+
+        document.body.appendChild(status);
+
+    }
+
+    switch (type) {
+
+        case "success":
+
+            status.style.background = "#4CAF50";
+
+            break;
+
+        case "error":
+
+            status.style.background = "#E53935";
+
+            break;
+
+        default:
+
+            status.style.background = "#333";
+
+    }
+
+    status.innerHTML = message;
+
+    status.style.display = "block";
+
+    setTimeout(() => {
+
+        status.style.display = "none";
+
+    }, 2500);
+
+}
+
+
+// ===========================================
+// Network
+// ===========================================
+
+window.addEventListener(
+
+    "online",
+
+    () => {
+
+        showStatus(
+
+            "اتصال اینترنت برقرار شد.",
+
+            "success"
+
+        );
+
+    }
+
+);
+
+window.addEventListener(
+
+    "offline",
+
+    () => {
+
+        showStatus(
+
+            "اتصال اینترنت قطع شد.",
+
+            "error"
+
+        );
+
+    }
+
+);
+
+
+// ===========================================
+// Preload Next Image
+// ===========================================
+
+function preloadNextImage() {
+
+    if (currentIndex >= photos.length - 1) {
+
+        return;
+
+    }
+
+    const img = new Image();
+
+    img.src = photos[currentIndex + 1].image;
+
+}
+
+
+// ===========================================
+// Improve Display Photo
+// ===========================================
+
+const oldDisplayPhoto = displayPhoto;
+
+displayPhoto = function () {
+
+    oldDisplayPhoto();
+
+    preloadNextImage();
+
+};
+
+
+// ===========================================
+// Auto Resize Comment Box
+// ===========================================
+
+commentInput.addEventListener(
+
+    "input",
+
+    function () {
+
+        this.style.height = "auto";
+
+        this.style.height =
+
+            this.scrollHeight + "px";
+
+    }
+
+);
+
+
+// ===========================================
+// Enter Key
+// ===========================================
+
+commentInput.addEventListener(
+
+    "keydown",
+
+    function (event) {
+
+        if (
+
+            event.key === "Enter" &&
+
+            !event.shiftKey
+
+        ) {
+
+            event.preventDefault();
+
+            saveComment();
+
+        }
+
+    }
+
+);
+
+
+// ===========================================
+// Init
+// ===========================================
+
+async function init() {
+
+    showStatus(
+
+        "در حال اتصال به Firebase..."
+
+    );
+
+    const ok = await loginAnonymous();
+
+    if (!ok) {
+
+        commentsElement.innerHTML =
+
+            "<div class='empty'>اتصال به Firebase برقرار نشد.</div>";
+
+        showStatus(
+
+            "خطا در اتصال",
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+    getUserName();
+
+    await loadPhotos();
+
+    showStatus(
+
+        "آماده استفاده",
+
+        "success"
+
+    );
+
+}
+
+
+// ===========================================
+// Start
+// ===========================================
+
+init();
