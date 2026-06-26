@@ -150,10 +150,19 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
   const auth = getAuth(app);
 
-await signInAnonymously(auth);
-console.log("Anonymous Login موفق");
-console.log(auth.currentUser);
-console.log("Anonymous Login موفق");
+try {
+
+    await signInAnonymously(auth);
+
+    console.log("Anonymous Login موفق");
+
+    console.log(auth.currentUser);
+
+} catch (error) {
+
+    console.error("Anonymous Login Error:", error);
+
+}
 let photos = [];
 let currentIndex = 0;
 let unsubscribe = null;
