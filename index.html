@@ -1,372 +1,106 @@
-                                                    <!DOCTYPE html>
-<html lang="fa">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Photo Gallery</title>
 
-<style>
-@font-face{
-    font-family:'Peyda';
-    src:url('Peyda-Bold.ttf') format('truetype');
-}
+    <meta charset="UTF-8">
 
-body{
-    margin:0;
-    background:black;
-    text-align:center;
-    font-family:'Peyda',sans-serif;
-}
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-#photo{
-    width:100%;
-    max-height:75vh;
-    object-fit:contain;
-    margin-top:10px;
-}
+    <title>Random Photo Viewer v2.0</title>
 
-#photoDate{
-    color:white;
-    font-size:24px;
-    margin:15px 0;
-}
+    <link rel="stylesheet" href="style.css">
 
-.buttons{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    margin:20px auto;
-}
-
-.nav-btn{
-    width:180px;
-    min-height:80px;
-    background:#E8C6F0;
-    color:#000;
-    border:none;
-    border-radius:28px;
-    font-size:20px;
-    font-family:'Peyda',sans-serif;
-    cursor:pointer;
-}
-
-#commentInput{
-    width:90%;
-    max-width:500px;
-    height:90px;
-    padding:10px;
-    border-radius:15px;
-    font-family:'Peyda',sans-serif;
-    resize:none;
-}
-
-.save-btn{
-    margin-top:10px;
-    padding:12px 24px;
-    border:none;
-    border-radius:15px;
-    background:#E8C6F0;
-    font-family:'Peyda',sans-serif;
-    cursor:pointer;
-}
-
-#comments{
-    width:90%;
-    max-width:500px;
-    margin:20px auto;
-    text-align:right;
-    color:white;
-}
-
-.comment{
-    background:#222;
-    padding:12px;
-    border-radius:12px;
-    margin-top:10px;
-    word-break:break-word;
-}
-
-  .comment-name{
-    font-weight:bold;
-    color:#1976d2;
-    margin-bottom:6px;
-}
-
-.comment-text{
-    color:#333;
-    white-space:pre-wrap;
-}
-</style>
 </head>
 
 <body>
 
-<img id="photo">
-<div id="photoDate"></div>
+    <div class="container">
 
-<textarea id="commentInput" placeholder="کامنت خود را بنويسيد..."></textarea>
-<br>
-<button class="save-btn" onclick="saveComment()">ثبت کامنت</button>
-<button class="save-btn" onclick="adminLogin()">
-ورود مدیر
-</button>
-<div id="comments"></div>
+        <header>
 
-<div class="buttons">
-    <button class="nav-btn" onclick="showPreviousPhoto()">⬅️<br>عکس قبلي</button>
-    <button class="nav-btn" onclick="showNextPhoto()">➡️<br>عکس بعدي</button>
-</div>
+            <h1>📷 گالری تصاویر</h1>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  
-  import {
-  getAuth,
-  signInAnonymously
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  
-  import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot,
-  serverTimestamp,
-  deleteDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-  const firebaseConfig = {
-  apiKey: "AIzaSyCvcRGbuSMPcE4vXpewgdmP37LfvChIfXQ",
-  authDomain: "random-photo-alireza.firebaseapp.com",
-  projectId: "random-photo-alireza",
-  storageBucket: "random-photo-alireza.firebasestorage.app",
-  messagingSenderId: "233987316766",
-  appId: "1:233987316766:web:95b51081a120d49ffee20f",
-  measurementId: "G-9MHWL76RFE"
-};
+        </header>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-  /*const auth = getAuth(app);
+        <main>
 
-try {
+            <section class="photo-section">
 
-    await signInAnonymously(auth);
+                <img
+                    id="photo"
+                    src=""
+                    alt="Photo">
 
-    console.log("Anonymous Login موفق");
+                <div id="photoDate"></div>
 
-    console.log(auth.currentUser);
+                <div class="navigation">
 
-} catch (error) {
+                    <button id="previousButton">
 
-    console.error("Anonymous Login Error:", error);
+                        ⬅ قبلی
 
-}
-*/
-let photos = [];
-let currentIndex = 0;
-let unsubscribe = null;
-const commentsCollection = collection(db, "comments");
-  const ADMIN_PASSWORD = "123456";
-async function loadPhotos() {
+                    </button>
 
-    try {
+                    <button id="nextButton">
 
-        const response = await fetch("photos.json");
+                        بعدی ➜
 
-        photos = await response.json();
+                    </button>
 
-        displayPhoto();
+                </div>
 
-    } catch (error) {
+            </section>
 
-        console.error(error);
+            <section class="comment-section">
 
-        alert("خطا در خواندن photos.json");
+                <h2>
 
-    }
+                    💬 کامنت‌ها
 
-}
+                </h2>
 
-function getPhotoKey(){
-    return photos[currentIndex].image;
-}
+                <div id="comments">
 
-function loadComments() {
+                    در حال بارگذاری...
 
-    if (unsubscribe) {
-        unsubscribe();
-    }
+                </div>
 
-    const photoKey = getPhotoKey();
+                <textarea
 
-    console.log("Photo Key:", photoKey);
+                    id="commentInput"
 
-    const q = query(
-        commentsCollection,
-        where("photo", "==", photoKey)
-    );
+                    placeholder="نظر خود را بنویس..."
 
-    unsubscribe = onSnapshot(q, (snapshot) => {
+                ></textarea>
 
-        console.log("تعداد کامنت‌ها:", snapshot.size);
+                <button id="sendComment">
 
-        let html = "<h3>💬 کامنت‌ها</h3>";
+                    ثبت کامنت
 
-        snapshot.forEach((docSnap) => {
+                </button>
 
-            console.log(docSnap.id, docSnap.data());
+            </section>
 
-            const comment = docSnap.data();
+        </main>
 
-          html += `
-<div class="comment">
+        <footer>
 
-    <div class="comment-name">
-        👤 ${comment.name || "کاربر"}
+            <button id="adminLogin">
+
+                ورود مدیر
+
+            </button>
+
+        </footer>
+
     </div>
 
-    <div class="comment-text">
-        ${comment.text}
-    </div>
+    <script type="module" src="firebase.js"></script>
 
-</div>
-`;
-
-        });
-
-        document.getElementById("comments").innerHTML = html;
-
-    });
-
-}
-function getUserName() {
-    let name = localStorage.getItem("userName");
-
-    while (!name || name.trim() === "") {
-
-        name = prompt("لطفاً نام خود را وارد کنید:");
-
-        if (name === null) continue;
-
-        name = name.trim();
-    }
-
-    localStorage.setItem("userName", name);
-
-    return name;
-}
-window.saveComment = async function () {
-
-    const input = document.getElementById("commentInput");
-
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    try {
-
-        await addDoc(commentsCollection, {
-
-    photo: getPhotoKey(),
-
-    name: getUserName(),
-
-    text: text,
-
-    createdAt: serverTimestamp()
-
-});
-
-        input.value = "";
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert("ثبت کامنت انجام نشد.");
-
-    }
-
-}
-
-function displayPhoto(){
-
-    document.getElementById("photo").src =
-        photos[currentIndex].image;
-
-    document.getElementById("photoDate").innerText =
-        "🗓️ " + photos[currentIndex].date;
-
-    loadComments();
-}
-
-window.showNextPhoto = function(){
-
-    if(currentIndex < photos.length - 1){
-
-        currentIndex++;
-
-        loadPhotos();
-    }
-}
-
-window.showPreviousPhoto = function(){
-
-    if(currentIndex > 0){
-
-        currentIndex--;
-
-        loadPhotos();
-
-    }
-
-}
-const userName = getUserName();
-
-console.log("نام کاربر:", userName);
-
-loadPhotos();
-window.adminLogin = function () {
-
-    const password = prompt("رمز مدیریت را وارد کنید");
-
-    if (password === ADMIN_PASSWORD) {
-
-        localStorage.setItem("isAdmin", "true");
-
-        alert("ورود مدیر موفق بود.");
-
-        loadComments();
-
-    } else {
-
-        alert("رمز اشتباه است.");
-
-    }
-
-}
-  window.deleteComment = async function (id) {
-
-    if (!confirm("آیا از حذف این کامنت مطمئن هستید؟")) {
-        return;
-    }
-
-    try {
-
-        await deleteDoc(doc(db, "comments", id));
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert("حذف کامنت انجام نشد.");
-
-    }
-
-}
-</script>
+    <script type="module" src="app.js"></script>
 
 </body>
+
 </html>
