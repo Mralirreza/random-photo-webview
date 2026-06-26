@@ -1,187 +1,230 @@
-// ===============================
+// ===========================================
 // Random Photo Viewer v2.0
-// ===============================
+// app.js
+// ===========================================
 
-import{
+import {
 
-commentsCollection,
+    db,
 
-loginAnonymous
+    commentsCollection,
 
-}
+    loginAnonymous
 
-from "./firebase.js";
+} from "./firebase.js";
+
+import {
+
+    addDoc,
+
+    query,
+
+    where,
+
+    orderBy,
+
+    onSnapshot,
+
+    serverTimestamp,
+
+    deleteDoc,
+
+    doc
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-let photos=[];
+// ===========================================
+// Variables
+// ===========================================
 
-let currentIndex=0;
+let photos = [];
 
-let unsubscribe=null;
+let currentIndex = 0;
+
+let unsubscribe = null;
+
+let sendingComment = false;
+
+const ADMIN_PASSWORD = "123456";
 
 
-// ===============================
-// User Name
-// ===============================
+// ===========================================
+// DOM
+// ===========================================
 
-function getUserName(){
+const photoElement = document.getElementById("photo");
 
-    let name=localStorage.getItem("userName");
+const dateElement = document.getElementById("photoDate");
 
-    while(!name || name.trim()===""){
+const commentsElement = document.getElementById("comments");
 
-        name=prompt("نام خود را وارد کنید");
+const commentInput = document.getElementById("commentInput");
 
-        if(name===null){
+const sendButton = document.getElementById("sendComment");
+
+const nextButton = document.getElementById("nextButton");
+
+const previousButton = document.getElementById("previousButton");
+
+const adminButton = document.getElementById("adminLogin");
+
+
+// ===========================================
+// User
+// ===========================================
+
+function getUserName() {
+
+    let name = localStorage.getItem("userName");
+
+    while (!name || name.trim() === "") {
+
+        name = prompt("لطفاً نام خود را وارد کنید:");
+
+        if (name === null) {
 
             continue;
 
         }
 
-        name=name.trim();
+        name = name.trim();
 
     }
 
-    localStorage.setItem("userName",name);
+    localStorage.setItem("userName", name);
 
     return name;
 
 }
 
 
-// ===============================
+// ===========================================
+// Photo Helpers
+// ===========================================
+
+function getPhotoKey() {
+
+    if (!photos.length) {
+
+        return "";
+
+    }
+
+    return photos[currentIndex].image;
+
+}
+
+
+// ===========================================
 // Load Photos
-// ===============================
+// ===========================================
 
-async function loadPhotos(){
+async function loadPhotos() {
 
-    try{
+    try {
 
-        const response=await fetch("photos.json");
+        const response = await fetch("photos.json");
 
-        photos=await response.json();
+        if (!response.ok) {
+
+            throw new Error("photos.json پیدا نشد.");
+
+        }
+
+        photos = await response.json();
+
+        if (!Array.isArray(photos) || photos.length === 0) {
+
+            throw new Error("لیست عکس‌ها خالی است.");
+
+        }
+
+        currentIndex = 0;
 
         displayPhoto();
 
     }
 
-    catch(error){
+    catch (error) {
 
         console.error(error);
 
-        alert("خطا در بارگذاری عکس‌ها");
+        alert("بارگذاری تصاویر انجام نشد.");
 
     }
 
 }
 
 
-// ===============================
+// ===========================================
 // Display Photo
-// ===============================
+// ===========================================
 
-function displayPhoto(){
+function displayPhoto() {
 
-    const photo=photos[currentIndex];
+    const photo = photos[currentIndex];
 
-    document.getElementById("photo").src=photo.image;
+    photoElement.src = photo.image;
 
-    document.getElementById("photoDate").innerHTML=
+    photoElement.alt = "Photo";
 
-    "🗓️ "+photo.date;
+    dateElement.innerHTML = "🗓️ " + photo.date;
 
     loadComments();
 
 }
 
 
-// ===============================
-// Next
-// ===============================
+// ===========================================
+// Navigation
+// ===========================================
 
-function showNextPhoto(){
+function nextPhoto() {
 
-    if(currentIndex<photos.length-1){
+    if (currentIndex >= photos.length - 1) {
 
-        currentIndex++;
-
-        displayPhoto();
+        return;
 
     }
 
+    currentIndex++;
+
+    displayPhoto();
+
 }
 
+function previousPhoto() {
 
-// ===============================
-// Previous
-// ===============================
+    if (currentIndex <= 0) {
 
-function showPreviousPhoto(){
-
-    if(currentIndex>0){
-
-        currentIndex--;
-
-        displayPhoto();
+        return;
 
     }
 
-}
+    currentIndex--;
 
-
-// ===============================
-// Comments
-// ===============================
-
-function loadComments(){
-
-    console.log("Loading comments...");
-
-    // در مرحله بعد کامل می‌شود
+    displayPhoto();
 
 }
 
 
-// ===============================
-// Save Comment
-// ===============================
-
-async function saveComment(){
-
-    console.log("Saving Comment...");
-
-    // در مرحله بعد کامل می‌شود
-
-}
-
-
-// ===============================
+// ===========================================
 // Events
-// ===============================
+// ===========================================
 
-document
-.getElementById("nextButton")
-.onclick=showNextPhoto;
+nextButton.addEventListener(
 
-document
-.getElementById("previousButton")
-.onclick=showPreviousPhoto;
+    "click",
 
-document
-.getElementById("sendComment")
-.onclick=saveComment;
+    nextPhoto
 
+);
 
-// ===============================
-// Start
-// ===============================
+previousButton.addEventListener(
 
-(async()=>{
+    "click",
 
-    await loginAnonymous();
+    previousPhoto
 
-    getUserName();
-
-    loadPhotos();
-
-})();
+);
