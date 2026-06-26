@@ -85,6 +85,17 @@ body{
     margin-top:10px;
     word-break:break-word;
 }
+
+  .comment-name{
+    font-weight:bold;
+    color:#1976d2;
+    margin-bottom:6px;
+}
+
+.comment-text{
+    color:#333;
+    white-space:pre-wrap;
+}
 </style>
 </head>
 
@@ -199,20 +210,16 @@ function loadComments() {
 
             const comment = docSnap.data();
 
-            html += `
+          html += `
 <div class="comment">
-    ${comment.text}
 
-    ${
-        localStorage.getItem("isAdmin") === "true"
-        ?
-        `<br><br>
-        <button onclick="deleteComment('${docSnap.id}')">
-            🗑 حذف
-        </button>`
-        :
-        ""
-    }
+    <div class="comment-name">
+        👤 ${comment.name || "کاربر"}
+    </div>
+
+    <div class="comment-text">
+        ${comment.text}
+    </div>
 
 </div>
 `;
