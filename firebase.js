@@ -6,7 +6,7 @@
 import {
 
 initializeApp
-
+console.log(firebaseConfig);
 }
 
 from
