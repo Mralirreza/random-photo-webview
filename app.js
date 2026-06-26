@@ -623,36 +623,6 @@ adminButton.addEventListener(
 // Start Application
 // ===========================================
 
-async function init() {
-
-    const ok = await loginAnonymous();
-
-    if (!ok) {
-
-        commentsElement.innerHTML =
-
-            '<div class="empty">اتصال به Firebase برقرار نشد.</div>';
-
-        return;
-
-    }
-
-    getUserName();
-
-    await loadPhotos();
-
-}
-
-
-// ===========================================
-// Start
-// ===========================================
-
-init();
-// ===========================================
-// Utilities
-// ===========================================
-
 function showStatus(message, type = "info") {
 
     let status = document.getElementById("statusMessage");
