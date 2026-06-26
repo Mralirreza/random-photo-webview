@@ -131,6 +131,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+  const auth = getAuth(app);
+
+await signInAnonymously(auth);
+
+console.log("Anonymous Login موفق");
 let photos = [];
 let currentIndex = 0;
 let unsubscribe = null;
