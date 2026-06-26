@@ -212,7 +212,23 @@ function loadComments() {
     });
 
 }
+function getUserName() {
 
+    let name = localStorage.getItem("userName");
+
+    while (!name || name.trim() === "") {
+
+        name = prompt("لطفاً نام خود را وارد کنید:");
+
+        if (name === null) continue;
+
+        name = name.trim();
+    }
+
+    localStorage.setItem("userName", name);
+
+    return name;
+}
 window.saveComment = async function () {
 
     const input = document.getElementById("commentInput");
@@ -272,7 +288,8 @@ window.showPreviousPhoto = function(){
 
         currentIndex--;
 
-        loadPhotos();
+        getUserName();
+loadPhotos();
     }
 }
 
