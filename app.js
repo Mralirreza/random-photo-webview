@@ -477,3 +477,175 @@ sendButton.addEventListener(
     saveComment
 
 );
+// ===========================================
+// Admin
+// ===========================================
+
+function adminLogin() {
+
+    const password = prompt("رمز مدیر را وارد کنید:");
+
+    if (password === null) {
+
+        return;
+
+    }
+
+    if (password === ADMIN_PASSWORD) {
+
+        localStorage.setItem("isAdmin", "true");
+
+        alert("ورود مدیر موفق بود.");
+
+        loadComments();
+
+    }
+
+    else {
+
+        alert("رمز اشتباه است.");
+
+    }
+
+}
+
+
+// ===========================================
+// Admin Logout
+// ===========================================
+
+function adminLogout() {
+
+    localStorage.removeItem("isAdmin");
+
+    alert("از حساب مدیر خارج شدید.");
+
+    loadComments();
+
+}
+
+
+// ===========================================
+// Delete Comment
+// ===========================================
+
+async function deleteComment(id) {
+
+    const isAdmin =
+
+        localStorage.getItem("isAdmin") === "true";
+
+    if (!isAdmin) {
+
+        alert("دسترسی غیرمجاز.");
+
+        return;
+
+    }
+
+    const ok = confirm(
+
+        "آیا از حذف این کامنت مطمئن هستید؟"
+
+    );
+
+    if (!ok) {
+
+        return;
+
+    }
+
+    try {
+
+        await deleteDoc(
+
+            doc(db, "comments", id)
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("حذف کامنت انجام نشد.");
+
+    }
+
+}
+
+
+// ===========================================
+// Keyboard Shortcut
+// Ctrl + Shift + A
+// ===========================================
+
+document.addEventListener(
+
+    "keydown",
+
+    (event) => {
+
+        if (
+
+            event.ctrlKey &&
+
+            event.shiftKey &&
+
+            event.key.toLowerCase() === "a"
+
+        ) {
+
+            adminLogin();
+
+        }
+
+    }
+
+);
+
+
+// ===========================================
+// Admin Button
+// ===========================================
+
+adminButton.addEventListener(
+
+    "click",
+
+    adminLogin
+
+);
+
+
+// ===========================================
+// Start Application
+// ===========================================
+
+async function init() {
+
+    const ok = await loginAnonymous();
+
+    if (!ok) {
+
+        commentsElement.innerHTML =
+
+            '<div class="empty">اتصال به Firebase برقرار نشد.</div>';
+
+        return;
+
+    }
+
+    getUserName();
+
+    await loadPhotos();
+
+}
+
+
+// ===========================================
+// Start
+// ===========================================
+
+init();
