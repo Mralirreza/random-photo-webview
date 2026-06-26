@@ -228,3 +228,252 @@ previousButton.addEventListener(
     previousPhoto
 
 );
+// ===========================================
+// Comments
+// ===========================================
+
+function formatDate(timestamp) {
+
+    if (!timestamp) {
+
+        return "";
+
+    }
+
+    const date = timestamp.toDate();
+
+    return date.toLocaleString("fa-IR");
+
+}
+
+
+// ===========================================
+// Create Comment HTML
+// ===========================================
+
+function createCommentHTML(id, comment) {
+
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+    return `
+
+    <div class="comment">
+
+        <div class="comment-name">
+
+            👤 ${comment.name || "کاربر"}
+
+        </div>
+
+        <div class="comment-text">
+
+            ${comment.text}
+
+        </div>
+
+        <div class="comment-date">
+
+            🕒 ${formatDate(comment.createdAt)}
+
+        </div>
+
+        ${
+
+            isAdmin
+
+            ?
+
+            `<button
+                class="comment-delete"
+                data-id="${id}">
+                حذف
+            </button>`
+
+            :
+
+            ""
+
+        }
+
+    </div>
+
+    `;
+
+}
+
+
+// ===========================================
+// Load Comments
+// ===========================================
+
+function loadComments() {
+
+    if (unsubscribe) {
+
+        unsubscribe();
+
+    }
+
+    commentsElement.innerHTML =
+
+        '<div class="loading">در حال بارگذاری...</div>';
+
+    const q = query(
+
+        commentsCollection,
+
+        where("photo", "==", getPhotoKey()),
+
+        orderBy("createdAt", "desc")
+
+    );
+
+    unsubscribe = onSnapshot(
+
+        q,
+
+        (snapshot) => {
+
+            if (snapshot.empty) {
+
+                commentsElement.innerHTML =
+
+                    '<div class="empty">هنوز کامنتی ثبت نشده است.</div>';
+
+                return;
+
+            }
+
+            let html = "";
+
+            snapshot.forEach((docSnap) => {
+
+                html += createCommentHTML(
+
+                    docSnap.id,
+
+                    docSnap.data()
+
+                );
+
+            });
+
+            commentsElement.innerHTML = html;
+
+            document
+
+                .querySelectorAll(".comment-delete")
+
+                .forEach((button) => {
+
+                    button.addEventListener(
+
+                        "click",
+
+                        () => {
+
+                            deleteComment(
+
+                                button.dataset.id
+
+                            );
+
+                        }
+
+                    );
+
+                });
+
+        },
+
+        (error) => {
+
+            console.error(error);
+
+            commentsElement.innerHTML =
+
+                '<div class="empty">خطا در دریافت کامنت‌ها.</div>';
+
+        }
+
+    );
+
+}
+
+
+// ===========================================
+// Save Comment
+// ===========================================
+
+async function saveComment() {
+
+    if (sendingComment) {
+
+        return;
+
+    }
+
+    const text = commentInput.value.trim();
+
+    if (!text) {
+
+        alert("کامنت را وارد کنید.");
+
+        return;
+
+    }
+
+    sendingComment = true;
+
+    sendButton.disabled = true;
+
+    try {
+
+        await addDoc(
+
+            commentsCollection,
+
+            {
+
+                photo: getPhotoKey(),
+
+                name: getUserName(),
+
+                text: text,
+
+                createdAt: serverTimestamp()
+
+            }
+
+        );
+
+        commentInput.value = "";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("ثبت کامنت انجام نشد.");
+
+    }
+
+    sendingComment = false;
+
+    sendButton.disabled = false;
+
+}
+
+
+// ===========================================
+// Event
+// ===========================================
+
+sendButton.addEventListener(
+
+    "click",
+
+    saveComment
+
+);
