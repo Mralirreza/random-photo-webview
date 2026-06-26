@@ -88,21 +88,24 @@ const db=getFirestore(app);
 
 // ======================================
 
-async function loginAnonymous(){
+async function loginAnonymous() {
 
-    try{
+    console.log("Origin:", window.location.origin);
+    console.log("Host:", window.location.host);
+    console.log("API Key:", firebaseConfig.apiKey);
 
-        await signInAnonymously(auth);
+    try {
 
-        console.log("Firebase Connected");
+        const result = await signInAnonymously(auth);
+
+        console.log("Anonymous Success:", result.user.uid);
 
         return true;
 
-    }
+    } catch (error) {
 
-    catch(error){
-
-        console.error(error);
+        console.error("Anonymous Error:", error.code);
+        console.error("Message:", error.message);
 
         return false;
 
