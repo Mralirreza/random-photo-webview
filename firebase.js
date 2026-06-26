@@ -62,17 +62,17 @@ from
 
 const firebaseConfig={
 
-apiKey:"YOUR_API_KEY",
+apiKey:"AIzaSyCvcRGbuSMPcE4vXpewgdmP37LfvChIfXQ",
 
-authDomain:"YOUR_PROJECT.firebaseapp.com",
+authDomain:"random-photo-alireza.firebaseapp.com",
 
-projectId:"YOUR_PROJECT",
+projectId:"random-photo-alireza",
 
-storageBucket:"YOUR_PROJECT.appspot.com",
+storageBucket:"random-photo-alireza.firebasestorage.app",
 
-messagingSenderId:"YOUR_SENDER",
+messagingSenderId:"233987316766",
 
-appId:"YOUR_APP_ID"
+appId:"1:233987316766:web:95b51081a120d49ffee20f"
 
 };
 
