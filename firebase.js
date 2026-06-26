@@ -89,7 +89,8 @@ const db=getFirestore(app);
 // ======================================
 
 async function loginAnonymous(){
-
+console.log("Origin:", window.location.origin);
+console.log("API Key:", firebaseConfig.apiKey);
     try{
 
         await signInAnonymously(auth);
