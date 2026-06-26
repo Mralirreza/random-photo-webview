@@ -1,0 +1,366 @@
+/* ===================================
+   Random Photo Viewer v2.0
+   style.css
+=================================== */
+
+@font-face {
+
+    font-family: "Peyda";
+
+    src: url("fonts/Peyda-Bold.ttf");
+
+}
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+body {
+
+    font-family: "Peyda", sans-serif;
+
+    background: #111;
+
+    color: #fff;
+
+    min-height: 100vh;
+
+    padding: 20px;
+
+}
+
+.container {
+
+    max-width: 800px;
+
+    margin: 0 auto;
+
+}
+
+header {
+
+    text-align: center;
+
+    margin-bottom: 25px;
+
+}
+
+header h1 {
+
+    font-size: 2rem;
+
+}
+
+.photo-section {
+
+    background: #1b1b1b;
+
+    border-radius: 15px;
+
+    padding: 15px;
+
+    box-shadow: 0 0 20px rgba(0,0,0,.3);
+
+}
+
+#photo {
+
+    width: 100%;
+
+    border-radius: 12px;
+
+    display: block;
+
+    object-fit: cover;
+
+}
+
+#photoDate {
+
+    margin-top: 12px;
+
+    text-align: center;
+
+    color: #bbb;
+
+    font-size: .95rem;
+
+}
+
+.navigation {
+
+    margin-top: 15px;
+
+    display: flex;
+
+    gap: 10px;
+
+}
+
+.navigation button {
+
+    flex: 1;
+
+}
+
+button {
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 1rem;
+
+    transition: .25s;
+
+}
+
+button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+#previousButton {
+
+    background: #444;
+
+    color: white;
+
+}
+
+#previousButton:hover {
+
+    background: #555;
+
+}
+
+#nextButton {
+
+    background: #2196f3;
+
+    color: white;
+
+}
+
+#nextButton:hover {
+
+    background: #1976d2;
+
+}
+
+.comment-section {
+
+    margin-top: 25px;
+
+    background: #1b1b1b;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+}
+
+.comment-section h2 {
+
+    margin-bottom: 15px;
+
+}
+
+#comments {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+}
+
+.comment {
+
+    background: #2a2a2a;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+}
+
+.comment-name {
+
+    color: #4fc3f7;
+
+    margin-bottom: 8px;
+
+    font-size: .95rem;
+
+}
+
+.comment-text {
+
+    line-height: 1.8;
+
+    word-break: break-word;
+
+}
+
+.comment-date {
+
+    margin-top: 10px;
+
+    color: #999;
+
+    font-size: .8rem;
+
+}
+
+.comment-delete {
+
+    margin-top: 10px;
+
+    background: #e53935;
+
+    color: white;
+
+}
+
+.comment-delete:hover {
+
+    background: #c62828;
+
+}
+
+#commentInput {
+
+    width: 100%;
+
+    min-height: 100px;
+
+    resize: vertical;
+
+    border: none;
+
+    border-radius: 12px;
+
+    padding: 12px;
+
+    margin-bottom: 12px;
+
+    font-family: inherit;
+
+    font-size: 1rem;
+
+}
+
+#commentInput:focus {
+
+    outline: 2px solid #2196f3;
+
+}
+
+#sendComment {
+
+    width: 100%;
+
+    background: #4caf50;
+
+    color: white;
+
+}
+
+#sendComment:hover {
+
+    background: #388e3c;
+
+}
+
+footer {
+
+    margin-top: 20px;
+
+}
+
+#adminLogin {
+
+    width: 100%;
+
+    background: #ff9800;
+
+    color: white;
+
+}
+
+#adminLogin:hover {
+
+    background: #f57c00;
+
+}
+
+/* ==========================
+   Loading
+========================== */
+
+.loading {
+
+    text-align: center;
+
+    padding: 15px;
+
+    color: #aaa;
+
+}
+
+/* ==========================
+   Empty State
+========================== */
+
+.empty {
+
+    text-align: center;
+
+    padding: 15px;
+
+    color: #888;
+
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding: 10px;
+
+    }
+
+    header h1 {
+
+        font-size: 1.5rem;
+
+    }
+
+    .navigation {
+
+        flex-direction: column;
+
+    }
+
+}
