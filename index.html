@@ -134,7 +134,8 @@ const db = getFirestore(app);
   const auth = getAuth(app);
 
 await signInAnonymously(auth);
-
+console.log("Anonymous Login موفق");
+console.log(auth.currentUser);
 console.log("Anonymous Login موفق");
 let photos = [];
 let currentIndex = 0;
