@@ -300,7 +300,10 @@ window.showPreviousPhoto = function(){
 
         currentIndex--;
 
-        getUserName();
+       const userName = getUserName();
+
+console.log("نام کاربر:", userName);
+
 loadPhotos();
     }
 }
